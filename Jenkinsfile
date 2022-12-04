@@ -20,7 +20,7 @@ pipeline {
             steps {
 
                 // To run Maven on a Windows agent, use
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
             
 
@@ -37,7 +37,7 @@ pipeline {
         stage('Docker Build') {
     	
           steps {
-          	bat 'docker build -t spring-boot-websocket-chat-demo .'
+          	sh 'docker build -t spring-boot-websocket-chat-demo .'
           }
         }
         
@@ -45,9 +45,9 @@ pipeline {
         stage('Deploy') {
     	
           steps {
-            bat 'docker stop app_container'
-            bat 'docker rm app_container'
-          	bat 'docker run -d -p 5000:8080 --name app_container spring-boot-websocket-chat-demo'
+            sh 'docker stop app_container'
+            sh 'docker rm app_container'
+          	sh 'docker run -d -p 5000:8080 --name app_container spring-boot-websocket-chat-demo'
           }
         }
     }
