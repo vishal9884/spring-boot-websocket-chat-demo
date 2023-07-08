@@ -7,22 +7,23 @@ pipeline {
     }
 
     stages {
-        
         stage('Preparation') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/callicoder/spring-boot-websocket-chat-demo.git'
-
+                git 'https://github.com/nicks204/spring-boot-websocket-chat-demo.git'
+                
             }
         }
         
         stage('Build') {
             steps {
 
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+
                 // To run Maven on a Windows agent, use
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-            
 
             post {
                 // If Maven was able to run the tests, even if some of the test
@@ -34,21 +35,32 @@ pipeline {
             }
         }
         
-        stage('Docker Build') {
-    	
-          steps {
-          	bat 'docker build -t spring-boot-websocket-chat-demo .'
-          }
+        stage('Docker Image Build'){
+            
+            steps{
+                
+                sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
+                sh "docker build -t chatapplicationimage:$BUILD_NUMBER ."
+            }
         }
         
-         
-        stage('Deploy') {
-    	
-          steps {
-            bat 'docker stop app_container'
-            bat 'docker rm app_container'
-          	bat 'docker run -d -p 5000:8080 --name app_container spring-boot-websocket-chat-demo'
-          }
+         stage('Docker Deploy'){
+            
+            steps{
+                
+                sh "docker stop chatappcontainer"
+                sh "docker rm chatappcontainer"
+                sh "docker run -d --name chatappcontainer -p 8088:8080 chatapplicationimage:$BUILD_NUMBER"
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/nicks204/ChatApplicationTest.git'
+                sh "mvn clean test"
+                
+            }
         }
     }
 }
