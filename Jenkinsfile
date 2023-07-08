@@ -39,7 +39,7 @@ pipeline {
             
             steps{
                 
-                sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
+                //sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
                 sh "docker build -t chatapplicationimage:$BUILD_NUMBER ."
             }
         }
