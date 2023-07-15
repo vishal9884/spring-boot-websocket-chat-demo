@@ -39,7 +39,7 @@ pipeline {
             
             steps{
                 
-                sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
+                //sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
                 sh "docker build -t chatapplicationimage:$BUILD_NUMBER ."
             }
         }
@@ -57,7 +57,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/nicks204/ChatApplicationTest.git'
+                git 'https://github.com/vishal9884/ChatApplicationTest.git'
                 sh "mvn clean test"
                 
             }
