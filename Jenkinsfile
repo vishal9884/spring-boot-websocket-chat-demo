@@ -10,7 +10,7 @@ pipeline {
         stage('Preparation') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/nicks204/spring-boot-websocket-chat-demo.git'
+                git 'https://github.com/vishal9884/spring-boot-websocket-chat-demo.git'
                 
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             
             steps{
                 
-                //sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
+                sh "docker rmi chatapplicationimage:$BUILD_NUMBER"
                 sh "docker build -t chatapplicationimage:$BUILD_NUMBER ."
             }
         }
