@@ -26,7 +26,7 @@ mvn package
 java -jar target/websocket-demo-0.0.1-SNAPSHOT.jar
 ```
 
-Alternatively, you can run the app directly without packaging it like so -
+Alternatively, you can run  the app directly without packaging it like so -
 
 ```bash
 mvn spring-boot:run
